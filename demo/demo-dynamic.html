@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+	<h1>Demo : Register Form</h1>
+
+	<form id="my-form">
+		<ul>
+			<li>
+				<label for="" class="title">Name:</label>
+				<input type="text" name="name" value="">
+				<span class="error" id="error-name"></span>
+			</li>
+			<li>
+				<label for="" class="title">Email:</label>
+				<input type="text" name="email" value="">
+				<span class="error" id="error-email"></span>
+			</li>
+			<li>
+				<label for="" class="title">URL:</label>
+				<input type="text" name="url" value="">
+				<span class="error" id="error-url"></span>
+			</li>
+			<li>
+				<label for="" class="title">Gender:</label>
+				<label><input type="radio" name="gender" value="male">Male</label>
+				<label><input type="radio" name="gender" value="female">Female</label>
+				<span class="error" id="error-gender"></span>
+			</li>
+			<li>
+				<label for="" class="title">Password:</label>
+				<input type="password" name="password">
+				<span class="error" id="error-password"></span>
+			</li>
+			<li>
+				<label for="" class="title">Password2:</label>
+				<input type="password" name="password2">
+				<span class="error" id="error-password2"></span>
+			</li>
+		</ul>
+		<button name="submit" class="button-submit">Register</button>
+	</form>
+
+	<pre id="result"></pre>
+
+	<script src="../components/jquery/jquery.min.js"></script>
+	<script src="../src/extend.js"></script>
+	<script src="../src/valid.js"></script>
+	<script src="../src/validation.js"></script>
+
+	<script>
+
+	(function(){
+		var v = new $.Validation();
+
+		v.addRules({
+			"name" : [
+				{ method : "notEmpty", message : "no name ?" },
+				{ method : "maxLength", args : [100], message : "too long" }
+			],
+			"email" : [
+				{ method : "notEmpty", message : "no email ?" },
+				{ method : "email", message : "invalid email" }
+			],
+			"url" : [
+				{ method : "url", message : "invalid url" }
+			],
+			"gender" : [
+				{ method : "notEmpty", message : "select gender" }
+			],
+			"password" : [
+				{ method : "notEmpty", message : "no password ?" },
+				{ method : "rangeLength", args : [4, 32], message : "too long or short" }
+			],
+			"password2" : [
+				{ method : "notEmpty", message : "no password2 ?" },
+				{ method : "matches", args : ["password"], message : "not match" }
+			]
+		});
+
+		var form = $("#my-form");
+
+		form.find("input[name]").on("blur", function(){
+			var node, name, notice, value;
+
+			node = $(this);
+			name = node.prop("name");
+			notice = $("#error-" + name);
+			value = form.serializeObject()[name];
+
+			v.check(name, value)
+			.then(function(valid, message){
+				if(valid){
+					notice.hide()
+				} else {
+					notice.text(message).fadeIn();
+				}
+			});
+		});
+
+		form.find("input[type=radio][name]").on("click", function(){
+			$(this).trigger("blur");
+		});
+
+		form.on("submit", function(e){
+			e.preventDefault();
+
+			v.validateForm(this)
+			.then(function(valid, errors, data){
+				if(! valid){
+					$.each(errors, function(name, error){
+						form.find("input[name=" + name + "]").trigger("blur");
+					});
+				} else {
+					var result = $("#result").html("");
+					$.each(data, function(name, value){
+						result.append(name + ": " + value + "\n");
+					});
+				}
+			});
+		});
+
+	}());
+
+	</script>
+	
+</body>
+</html>

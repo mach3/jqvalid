@@ -1,0 +1,12 @@
+{
+	"src_files" : [
+		"components/jquery/jquery.min.js",
+		"src/extend.js",
+		"src/valid.js",
+		"src/validation.js",
+
+		"test/extend.js",
+		"test/valid.js",
+		"test/validation.js"
+	]
+}

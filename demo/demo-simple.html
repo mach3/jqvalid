@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+	<h1>Demo : Register Form</h1>
+
+	<form id="my-form">
+		<ul>
+			<li>
+				<label for="" class="title">Name:</label>
+				<input type="text" name="name" value="">
+			</li>
+			<li>
+				<label for="" class="title">Email:</label>
+				<input type="text" name="email" value="">
+			</li>
+			<li>
+				<label for="" class="title">URL:</label>
+				<input type="text" name="url" value="">
+			</li>
+			<li>
+				<label for="" class="title">Gender:</label>
+				<label><input type="radio" name="gender" value="male">Male</label>
+				<label><input type="radio" name="gender" value="female">Female</label>
+			</li>
+			<li>
+				<label for="" class="title">Password:</label>
+				<input type="password" name="password">
+			</li>
+			<li>
+				<label for="" class="title">Password2:</label>
+				<input type="password" name="password2">
+			</li>
+		</ul>
+		<button name="submit" class="button-submit">Register</button>
+	</form>
+
+	<pre id="result"></pre>
+
+	<script src="../components/jquery/jquery.min.js"></script>
+	<script src="../src/extend.js"></script>
+	<script src="../src/valid.js"></script>
+	<script src="../src/validation.js"></script>
+
+	<script>
+
+	(function(){
+		var v = new $.Validation();
+
+		v.addRules({
+			"name" : [
+				{ method : "notEmpty", message : "no name ?" },
+				{ method : "maxLength", args : [100], message : "too long" }
+			],
+			"email" : [
+				{ method : "notEmpty", message : "no email ?" },
+				{ method : "email", message : "invalid email" }
+			],
+			"url" : [
+				{ method : "url", message : "invalid url" }
+			],
+			"gender" : [
+				{ method : "notEmpty", message : "select gender" }
+			],
+			"password" : [
+				{ method : "notEmpty", message : "no password ?" },
+				{ method : "rangeLength", args : [4, 32], message : "too long or short" }
+			],
+			"password2" : [
+				{ method : "notEmpty", message : "no password2 ?" },
+				{ method : "matches", args : ["password"], message : "not match" }
+			]
+		});
+
+		$("#my-form").on("submit", function(e){
+			e.preventDefault();
+
+			v.validateForm(this)
+			.done(function(valid, errors){
+				var result, count;
+
+				result = $("#result").html("");
+				count = 0;;
+
+				if(valid){
+					result.append("All Valid !");
+				} else {
+					$.each(errors, function(name, message){
+						result.append(name + ": " + message + "\n");
+						count += 1;
+					});
+					result.prepend( count + " Errors\n----------\n");
+				}
+			});
+		});
+	}());
+
+	</script>
+	
+</body>
+</html>
