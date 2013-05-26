@@ -106,7 +106,14 @@ myValidation.check("email", "foo@example.com")
 jqValidの返す結果を利用して、うまいこと実装してください。
 
 
-## Author
+## APIドキュメント
+
+- [$.Validation](docs/validation.md)
+- [$.valid](docs/valid.md)
+- [Extensions](docs/extend.md)
+
+
+## 作者
 
 mach3
 

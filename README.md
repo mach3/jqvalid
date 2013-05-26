@@ -105,6 +105,11 @@ That's all jqValid does.
 You want to show an error message besides the input element ?  
 Sorry, but write by yourself using the result returnd by jqValid...
 
+## API Docs
+
+- [$.Validation](docs/validation.md)
+- [$.valid](docs/valid.md)
+- [Extensions](docs/extend.md)
 
 ## Author
 

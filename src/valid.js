@@ -76,7 +76,7 @@
 		 * @param String value
 		 */
 		digit : function(value){
-			return (/^\d+?$/).test(value);
+			return (/^\d+$/).test(value);
 		},
 
 		/**
@@ -196,7 +196,7 @@
 		 * @param String|Regex pattern
 		 */
 		regex : function(value, pattern){
-			if(typeof pattern === "string" || pattern instanceof String){
+			if($._isString(pattern)){
 				pattern = new RegExp(pattern);
 			}
 			return pattern.test(value);

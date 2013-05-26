@@ -11,10 +11,6 @@
 
 		this.MESSAGE_INVALID = "Invalid";
 
-		this.options = {
-			debug : false
-		};
-
 		this.data = {};
 		this.rules = {};
 		this.required = [];
