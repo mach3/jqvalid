@@ -43,6 +43,11 @@ $._count(obj); // 3
 $._count(obj, function(value){ /^b/.test(value); }); // 2
 ```
 
+### _toSingleByte(value:String) : String
+
+Encode multibyte characters in \[a-zA-Z0-9\] to singlebyte one
+
+
 ## $.fn
 
 ### serializeObject() : Object
