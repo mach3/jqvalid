@@ -153,10 +153,9 @@
 		 * @return $.Deferred
 		 */
 		this.validate = function(data, callback){
-			var dfd, count;
+			var dfd, valid;
 
 			dfd = $.Deferred();
-			count = 0;
 			this.clean();
 			this.setData(data);
 
@@ -167,15 +166,16 @@
 				.done(function(valid, message){
 					if(! valid){
 						my.errors[name] = message;
-						count += 1;
 					}
 				});
 			});
 
+			valid = $._count(this.errors) === 0;
+
 			if($.isFunction(callback)){
-				callback(! count, this.errors, data);
+				callback(valid, this.errors, data);
 			}
-			dfd.resolve(! count, this.errors, data);
+			dfd.resolve(valid, this.errors, data);
 			return dfd;
 		};
 
@@ -198,6 +198,17 @@
 		 */
 		this.getErrors = function(){
 			return this.errors;
+		};
+
+		/**
+		 * Get the latest result
+		 * @return Object
+		 */
+		this.getResult = function(){
+			return {
+				valid : $._count(this.errors) === 0,
+				errors : this.errors
+			};
 		};
 
 		this.init.apply(this, arguments);

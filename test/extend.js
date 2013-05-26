@@ -45,9 +45,17 @@ describe("extend.js : utility functions to extend jQuery", function(){
 		.toBe("foo/bar/%s");
 	});
 
-	it("serializeObject() : serialize form data as object", function(){
-		
+	it("_count() : count object's member", function(){
+		var o, a, f;
 
+		o = { a : true, c : false, d : true };
+		a = [1,2,3];
+		f = { a:"foo", b:"bar", c:"baz" };
+		
+		expect($._count(o)).toBe(3);
+		expect($._count(a)).toBe(3);
+		expect($._count(f, function(value){ return /^b/.test(value); })).toBe(2);
 	});
+
 
 });

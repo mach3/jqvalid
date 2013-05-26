@@ -6,9 +6,9 @@ Validation utility for jQuery
 ## Features
 
 - Class $.Validation to validate values in an object or form elements
-- Just return the messages when something invalid
+- Just return the error messages when something invalid
 - Define validation rules as object
-- Validate single value with $.valid
+- Test single value with $.valid
 - And some functions to support validation
 
 
@@ -46,14 +46,17 @@ var myValidation = new $.Validation(rules);
 
 ### Validation form and get result (validateForm)
 
-Pass HTMLFormElement or selector string to $.Validation.validateForm(), then get result for validation in callback.
-This returns $.Deferred object.
+Pass object as below to $.Validation.validateForm(), then get result in callback. (This returns $.Deferred object)
+
+- HTMLFormElement
+- Selector string
+- jQuery object which has HTMLFormElement
 
 ```
 myValidation.validateForm("form#my-form")
-.then(function(valid, messages, data){
+.then(function(valid, errors, data){
 	// valid : Boolean (values are all valid or not)
-	// messages : Object (error messages)
+	// errors : Object (error messages)
 	// data : Object (values passed to validate)
 });
 ```
@@ -64,24 +67,25 @@ You can also pass a callback function as second argument as below.
 myValidation.validateForm("form#my-form", function(){ ... });
 ```
 
-Or you can get result without callback. 
-$.Validation.getErrors() returns all error messages in the latest validation.
+Or you can get result without callback using $.Validation.getErrors() / $.Validation.getResult().
+
+- getErrors() returns all error messages in the latest validation.
+- getResult() returns result object consists of valid (boolean) and errors (object)
 
 ```
 myValidation.validateForm({...});
 var errors = myValidation.getErrors(); // Get messages as object
+var ressult = myValidation.getResult(); // Get result object
 ```
 
 ### Validate object (validate)
-
-You can pass an object to $.validate()
-
 
 ```
 myValidation.validateForm({
 	name : "foo",
 	email : "foo@example.com"
-});
+})
+.then(function(){ ... });
 ```
 
 ### Check single value (check)
@@ -101,11 +105,6 @@ That's all jqValid does.
 You want to show an error message besides the input element ?  
 Sorry, but write by yourself using the result returnd by jqValid...
 
-
-## Todo
-
-- write README (ja)
-- write API Docs 
 
 ## Author
 

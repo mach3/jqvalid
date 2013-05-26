@@ -43,6 +43,21 @@
 				str = str.replace("%s", value);
 			});
 			return str;
+		},
+
+		/**
+		 * Count object's member
+		 */
+		_count : function(obj, filter){
+			var i, n;
+			n = 0;
+			filter = $.isFunction(filter) ? filter : function(){ return true; };
+			for(i in obj){
+				if(obj.hasOwnProperty(i) && filter(obj[i])){
+					n += 1;
+				}
+			}
+			return n;
 		}
 	});
 
@@ -299,6 +314,22 @@
 				return this[method].apply(this, _args);
 			}
 			return null;
+		},
+
+		/**
+		 * add custom method
+		 */
+		_add : function(name, method, force){
+			force = force || false;
+			if(
+				(! this.hasOwnProperty(name) || force) 
+				&& ! /^_/.test(name) 
+				&& $.isFunction(method)
+			){
+				this[name] = method;
+				return true;
+			}
+			return false;
 		}
 	};
 
@@ -462,10 +493,9 @@
 		 * @return $.Deferred
 		 */
 		this.validate = function(data, callback){
-			var dfd, count;
+			var dfd, valid;
 
 			dfd = $.Deferred();
-			count = 0;
 			this.clean();
 			this.setData(data);
 
@@ -476,15 +506,16 @@
 				.done(function(valid, message){
 					if(! valid){
 						my.errors[name] = message;
-						count += 1;
 					}
 				});
 			});
 
+			valid = $._count(this.errors) === 0;
+
 			if($.isFunction(callback)){
-				callback(! count, this.errors, data);
+				callback(valid, this.errors, data);
 			}
-			dfd.resolve(! count, this.errors, data);
+			dfd.resolve(valid, this.errors, data);
 			return dfd;
 		};
 
@@ -507,6 +538,17 @@
 		 */
 		this.getErrors = function(){
 			return this.errors;
+		};
+
+		/**
+		 * Get the latest result
+		 * @return Object
+		 */
+		this.getResult = function(){
+			return {
+				valid : $._count(this.errors) === 0,
+				errors : this.errors
+			};
 		};
 
 		this.init.apply(this, arguments);

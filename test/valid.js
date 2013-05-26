@@ -162,4 +162,16 @@ describe("valid.js : utility method for validation", function(){
 		expect($.valid._call("exactLength", "foobar", [6])).toBe(true);
 	});
 
+	it("_add() : add custom method", function(){
+		var method = function(value){
+			return value === "foobar";
+		};
+		expect($.valid._add("isFoobar", method)).toBe(true);
+		expect($.valid.isFoobar("foobar")).toBe(true);
+		expect($.valid._add("isFoobar", function(){})).toBe(false);
+		expect($.valid._add("isFoobar", function(){}, true)).toBe(true);
+		expect($.valid._add("isFoobar", "hoge", true)).toBe(false);
+		expect($.valid._add("_add", function(){}, true)).toBe(false);
+	});
+
 });

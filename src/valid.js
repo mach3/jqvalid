@@ -230,6 +230,22 @@
 				return this[method].apply(this, _args);
 			}
 			return null;
+		},
+
+		/**
+		 * add custom method
+		 */
+		_add : function(name, method, force){
+			force = force || false;
+			if(
+				(! this.hasOwnProperty(name) || force) 
+				&& ! /^_/.test(name) 
+				&& $.isFunction(method)
+			){
+				this[name] = method;
+				return true;
+			}
+			return false;
 		}
 	};
 

@@ -32,6 +32,21 @@
 				str = str.replace("%s", value);
 			});
 			return str;
+		},
+
+		/**
+		 * Count object's member
+		 */
+		_count : function(obj, filter){
+			var i, n;
+			n = 0;
+			filter = $.isFunction(filter) ? filter : function(){ return true; };
+			for(i in obj){
+				if(obj.hasOwnProperty(i) && filter(obj[i])){
+					n += 1;
+				}
+			}
+			return n;
 		}
 	});
 

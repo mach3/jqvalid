@@ -80,7 +80,7 @@ describe("validation.js : Validation controller library", function(){
 		});
 	});
 
-	it("getData() / getErrors() : get cached data and errors", function(){
+	it("getData() / getErrors() / getResult() : get cached data and errors", function(){
 		var v = new $.Validation({
 			"name" : [ { method : "notEmpty" , message : "name is empty" } ],
 			"email" : [ { method : "email", message : "invalid email"} ]
@@ -93,6 +93,14 @@ describe("validation.js : Validation controller library", function(){
 
 		expect(v.getErrors()).toEqual({name:"name is empty", email:"invalid email"});
 		expect(v.getData()).toEqual({name:"", "email":"foobar"});
+		expect(v.getResult()).toEqual({
+			valid : false,
+			errors : {
+				name : "name is empty",
+				email : "invalid email"
+			}
+		});
 	});
+
 
 });
