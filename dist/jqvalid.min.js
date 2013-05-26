@@ -3,7 +3,7 @@
  * -------
  * Validation utility for jQuery
  *
- * @version 0.9.0
+ * @version 0.9.1
  * @require jQuery
  * @author mach3 <http://github.com/mach3>
  * @url http://github.com/mach3/jqvalid
